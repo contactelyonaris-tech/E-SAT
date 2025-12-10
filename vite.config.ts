@@ -13,12 +13,7 @@ export default defineConfig(({ mode }) => ({
       clientPort: 8082,
     },
     // Handle SPA routing
-    historyApiFallback: {
-      rewrites: [
-        { from: /^\/admin/, to: '/index.html' },
-        { from: /./, to: '/index.html' }
-      ]
-    },
+    historyApiFallback: true,
     fs: {
       strict: false,
     },
