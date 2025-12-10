@@ -12,6 +12,16 @@ export default defineConfig(({ mode }) => ({
       port: 8082,
       clientPort: 8082,
     },
+    // Handle SPA routing
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/admin/, to: '/index.html' },
+        { from: /./, to: '/index.html' }
+      ]
+    },
+    fs: {
+      strict: false,
+    },
   },
   preview: {
     host: "::",
@@ -120,11 +130,6 @@ export default defineConfig(({ mode }) => ({
   appType: 'spa',
   // This ensures that all routes are handled by index.html
   // and the SPA handles the routing
-  server: {
-    fs: {
-      strict: false,
-    },
-  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
