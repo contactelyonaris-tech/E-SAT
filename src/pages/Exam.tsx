@@ -35,6 +35,7 @@ const Exam = () => {
   const [accessCode, setAccessCode] = useState('');
   const [submittedServer, setSubmittedServer] = useState(false);
   const [recovered, setRecovered] = useState(false);
+  const [examScore, setExamScore] = useState<{ score: number; total: number } | null>(null);
   
   const { violations, screenshotCount, isFullscreen, enterFullscreen, exitFullscreen } = useSecureExam(examStarted, id);
   const cancelledRef = useRef(false);
