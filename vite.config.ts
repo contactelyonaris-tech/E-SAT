@@ -13,7 +13,12 @@ export default defineConfig(({ mode }) => ({
       clientPort: 8082,
     },
     // Handle SPA routing
-    historyApiFallback: true,
+    history: {
+      disableDotRule: true,
+      rewrites: [
+        { from: /\//, to: '/index.html' }
+      ]
+    },
     fs: {
       strict: false,
     },
@@ -23,7 +28,7 @@ export default defineConfig(({ mode }) => ({
     port: 8082,
     strictPort: true,
   },
-  base: './',
+  base: '/',
   esbuild: {
     jsx: 'automatic',
     jsxImportSource: 'react',
