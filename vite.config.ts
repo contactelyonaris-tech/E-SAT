@@ -7,11 +7,18 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8082,
+    strictPort: true,
+    hmr: {
+      port: 8082,
+      clientPort: 8082,
+    },
   },
   preview: {
     host: "::",
     port: 8082,
+    strictPort: true,
   },
+  base: './',
   esbuild: {
     jsx: 'automatic',
     jsxImportSource: 'react',
@@ -109,6 +116,15 @@ export default defineConfig(({ mode }) => ({
       },
     },
   ].filter(Boolean),
+  // Handle 404s by redirecting to index.html for client-side routing
+  appType: 'spa',
+  // This ensures that all routes are handled by index.html
+  // and the SPA handles the routing
+  server: {
+    fs: {
+      strict: false,
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

@@ -653,8 +653,12 @@ const Exam = () => {
       )}
 
       {/* Exam Content: internal player for Moodle-style exams */}
-      <main className="flex-1 overflow-hidden">
-        <QuizPlayer examId={id as string} />
+      <main className="flex-1 overflow-auto">
+        <div className="h-full w-full max-w-7xl mx-auto p-4 md:p-6">
+          <div className="bg-card rounded-lg shadow-lg border border-border h-full">
+            <QuizPlayer examId={id as string} />
+          </div>
+        </div>
       </main>
 
 
