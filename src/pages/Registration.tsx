@@ -116,7 +116,7 @@ const Registration = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a2e0a] via-[#0d3d0d] to-[#0a2e0a] flex flex-col p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a2e0a] via-[#0d3d0d] to-[#0a2e0a] flex flex-col items-center justify-center p-4 relative overflow-y-auto">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-accent/10 rounded-full blur-3xl animate-float"></div>
@@ -125,16 +125,14 @@ const Registration = () => {
       </div>
 
       {/* Header */}
-      <div className="relative z-10 mb-6 animate-fade-in-up">
+      <div className="relative z-10 mb-6 w-full max-w-4xl mx-auto px-4 animate-fade-in-up">
         <div className="text-center">
           <div className="flex justify-center mb-4 animate-float">
             <div className="relative">
               <div className="absolute inset-0 bg-accent/30 rounded-3xl blur-xl animate-glow"></div>
               <div className="relative bg-gradient-to-br from-background to-accent/10 p-4 rounded-3xl shadow-2xl border-2 border-accent/30">
 
-                <img src={logo} alt="Elyon Logo" className="h-16 w-auto" />
-
-                <img src={logo} alt="ELYONARIS TEST V1.0" className="h-20 w-20" />
+                <img src={logo} alt="ELYONARIS TEST V1.0" className="h-20 w-20 mx-auto" />
               </div>
             </div>
           </div>
@@ -153,9 +151,9 @@ const Registration = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 relative z-10 max-w-7xl mx-auto w-full">
-        <Card className="border-accent/30 shadow-2xl bg-gradient-to-br from-[#0f4a0f] to-[#0a2e0a] backdrop-blur-xl animate-scale-in relative">
-          <CardHeader className="space-y-1 pb-6">
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 mb-8">
+        <Card className="border-accent/30 shadow-2xl bg-gradient-to-br from-[#0f4a0f] to-[#0a2e0a] backdrop-blur-xl animate-scale-in w-full">
+          <CardHeader className="space-y-1 pb-6 px-6 pt-8">
             <CardTitle className="text-3xl text-[#d4f4dd] font-bold flex items-center gap-2">
               <UserPlus className="h-8 w-8 text-accent" />
               Registration
@@ -164,8 +162,8 @@ const Registration = () => {
               Complete your registration to access the exam platform
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="mb-4 p-4 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20 backdrop-blur-sm animate-fade-in">
+          <CardContent className="px-6 pb-8">
+            <div className="mb-6 p-4 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20 backdrop-blur-sm animate-fade-in">
               <div className="flex items-start gap-3">
                 <div className="bg-accent/20 p-2 rounded-lg">
                   <Shield className="h-5 w-5 text-accent" />
@@ -177,7 +175,7 @@ const Registration = () => {
               </div>
             </div>
 
-            <form onSubmit={handleRegister} className="space-y-5 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            <form onSubmit={handleRegister} className="space-y-5 animate-fade-in max-w-2xl mx-auto" style={{ animationDelay: '0.3s' }}>
               <div className="space-y-2">
                 <Label htmlFor="firstName" className="text-[#d4f4dd] font-medium">First Name</Label>
                 <Input
@@ -235,7 +233,7 @@ const Registration = () => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="sex" className="text-[#d4f4dd] font-medium">Sex</Label>
                   <select
@@ -317,7 +315,7 @@ const Registration = () => {
           </div>
         )}
 
-        <p className="text-center mt-6 text-[#d4f4dd]/50 text-sm animate-fade-in" style={{ animationDelay: '0.5s' }}>
+        <p className="text-center mt-8 text-[#d4f4dd]/50 text-sm animate-fade-in w-full" style={{ animationDelay: '0.5s' }}>
           Protected by ELYONARIS TEST V1.0 Security System
         </p>
       </div>

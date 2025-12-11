@@ -139,7 +139,7 @@ const Login = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-md relative z-10 mx-auto px-4">
         <div className="text-center mb-8 animate-fade-in-up">
           <div className="flex justify-center mb-6 animate-float">
             <div className="relative">
@@ -158,15 +158,15 @@ const Login = () => {
           </p>
         </div>
 
-        <Card className="border-accent/30 shadow-2xl bg-gradient-to-br from-[#0f4a0f] to-[#0a2e0a] backdrop-blur-xl animate-scale-in">
-          <CardHeader className="space-y-1 pb-6">
+        <Card className="w-full border-accent/30 shadow-2xl bg-gradient-to-br from-[#0f4a0f] to-[#0a2e0a] backdrop-blur-xl animate-scale-in">
+          <CardHeader className="space-y-1 pb-6 px-8 pt-8">
             <CardTitle className="text-3xl text-[#d4f4dd] font-bold">Sign In</CardTitle>
             <CardDescription className="text-[#d4f4dd]/60 text-base">
               Enter your credentials to access your exams
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-5">
+          <CardContent className="px-8 pb-8">
+            <form onSubmit={handleLogin} className="space-y-5 w-full">
               <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
                 <Label htmlFor="admissionId" className="text-[#d4f4dd] font-medium">Admission ID</Label>
                 <Input
@@ -213,7 +213,7 @@ const Login = () => {
               </Button>
             </form>
             
-            <div className="mt-6 p-5 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20 backdrop-blur-sm animate-fade-in" style={{ animationDelay: '0.6s' }}>
+            <div className="mt-6 p-5 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20 backdrop-blur-sm animate-fade-in w-full" style={{ animationDelay: '0.6s' }}>
               <div className="flex items-start gap-3">
                 <div className="bg-accent/20 p-2 rounded-lg">
                   <Shield className="h-5 w-5 text-accent" />
@@ -227,7 +227,7 @@ const Login = () => {
           </CardContent>
         </Card>
 
-            <p className="text-center mt-6 text-[#d4f4dd]/50 text-sm animate-fade-in" style={{ animationDelay: '0.7s' }}>
+            <p className="text-center mt-6 text-[#d4f4dd]/50 text-sm animate-fade-in w-full" style={{ animationDelay: '0.7s' }}>
           Brought To You By Elyonaris Support Team
         </p>
       </div>

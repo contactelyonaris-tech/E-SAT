@@ -45,7 +45,7 @@ export function Loading({ className, text = "Loading...", size = 'md' }: Loading
           ref={playerRef}
           autoplay
           loop
-          src="/animations/Loading-animation.json"
+          src="/src/assets/Lottie.json"
           style={{ width: '100%', height: '100%' }}
           onEvent={(event) => {
             if (event === 'error') {
