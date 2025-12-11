@@ -1,41 +1,28 @@
-# Welcome to your Lovable project
+# ELYONTESTED V1.0 - Secure Exam Platform
 
-## Project info
+## Project Overview
+A secure exam platform for students with Google Forms integration, anti-cheating measures, and real-time monitoring.
 
-**URL**: https://lovable.dev/projects/4565259d-c816-4eb4-98c6-26b7ae14edad
+## Getting Started
 
-## How can I edit this code?
+### Prerequisites
+- Node.js & npm - [Install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-There are several ways of editing your application.
+### Installation
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
 
-**Use Lovable**
+## Deployment
+This project is deployed on Vercel. Push changes to the main branch to trigger automatic deployments.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4565259d-c816-4eb4-98c6-26b7ae14edad) and start prompting.
+## Features
+- Secure exam environment
+- Google Forms integration
+- Real-time monitoring
+- Anti-cheating measures
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
+## Technologies Used
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).

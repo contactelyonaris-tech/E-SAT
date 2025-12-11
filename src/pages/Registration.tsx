@@ -182,7 +182,7 @@ const Registration = () => {
                   id="firstName"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="e.g. Jane"
+                  placeholder="e.g. Abebe"
                   className="bg-white/90"
                 />
               </div>
@@ -192,7 +192,7 @@ const Registration = () => {
                   id="lastName"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder="e.g. Doe"
+                  placeholder="e.g. Kebede"
                   className="bg-white/90"
                 />
               </div>
@@ -203,7 +203,7 @@ const Registration = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. jane@example.com"
+                  placeholder="e.g. contact.elyonaris@gmail.com"
                   className="bg-white/90"
                 />
               </div>
@@ -218,7 +218,7 @@ const Registration = () => {
                     id="section"
                     value={section}
                     onChange={(e) => setSection(e.target.value)}
-                    placeholder="e.g. A"
+                    placeholder="e.g. A/B/C/D"
                     className="bg-white/90"
                   />
                 </div>
@@ -228,7 +228,7 @@ const Registration = () => {
                     id="rollNumber"
                     value={rollNumber}
                     onChange={(e) => setRollNumber(e.target.value)}
-                    placeholder="e.g. 25"
+                    placeholder="e.g. 1-60"
                     className="bg-white/90"
                   />
                 </div>
