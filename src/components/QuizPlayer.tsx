@@ -7,15 +7,24 @@ import { supabase } from '@/lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-interface Question {
+export interface Question {
   id: string;
   question_text: string;
   options?: string[] | null;
   correct_answer?: string | number | null;
   value?: number | string | null;
+  type?: string;
+  section?: string;
+  passage?: string;
 }
 
-const QuizPlayer: React.FC<{ examId: string }> = ({ examId }) => {
+interface QuizPlayerProps {
+  examId?: string;
+  localQuestions?: Question[];
+  title?: string;
+}
+
+const QuizPlayer: React.FC<QuizPlayerProps> = ({ examId, localQuestions, title = 'Quiz' }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -30,24 +39,31 @@ const QuizPlayer: React.FC<{ examId: string }> = ({ examId }) => {
     const load = async () => {
       setLoading(true);
       try {
-        const { data } = await supabase
-          .from('exam_questions')
-          .select('*')
-          .eq('exam_id', examId)
-          .order('order_index', { ascending: true });
-        if (!mounted) return;
-        const rows = (data || []) as Question[];
-        setQuestions(rows);
+        if (localQuestions) {
+          // Use local questions if provided
+          if (!mounted) return;
+          setQuestions(localQuestions);
+        } else if (examId) {
+          // Otherwise load from database
+          const { data } = await supabase
+            .from('exam_questions')
+            .select('*')
+            .eq('exam_id', examId)
+            .order('order_index', { ascending: true });
+          if (!mounted) return;
+          const rows = (data || []) as Question[];
+          setQuestions(rows);
+        }
       } catch (err) {
         console.error('Failed to load questions', err);
-        toast.error('Failed to load exam questions. Contact admin.');
+        toast.error('Failed to load questions. Please try again.');
       } finally {
         setLoading(false);
       }
     };
     load();
     return () => { mounted = false; };
-  }, [examId]);
+  }, [examId, localQuestions]);
 
   const handleSelect = (qId: string, value: string) => {
     setAnswers(prev => ({ ...prev, [qId]: value }));
@@ -202,69 +218,144 @@ const QuizPlayer: React.FC<{ examId: string }> = ({ examId }) => {
     setReviewOpen(true);
   };
 
-  if (loading) return <div className="p-6">Loading exam...</div>;
-  if (questions.length === 0) return <div className="p-6">No questions found for this exam. Contact admin.</div>;
+  if (loading) return <div className="p-4">Loading questions...</div>;
+  if (!questions.length) return <div className="p-4">No questions found.</div>;
+
+  const currentQuestion = questions[currentIndex];
 
   return (
-    <div className="p-6 overflow-auto h-full">
-      <h2 className="text-2xl font-bold mb-4">Online Exam</h2>
-
-      <div className="flex gap-6">
-        <div className="flex-1">
-          {questions[currentIndex] && (
-            <div className="p-4 border rounded bg-white text-black">
-              <div className="mb-2 font-semibold flex items-center justify-between">
-                <span>{currentIndex + 1}. {questions[currentIndex].question_text}</span>
-                <Button variant="destructive" size="sm" onClick={() => setFlagged(prev => {
-                  const next = new Set(Array.from(prev));
-                  if (next.has(currentIndex)) next.delete(currentIndex); else next.add(currentIndex);
-                  return next;
-                })}>{flagged.has(currentIndex) ? 'Unflag' : 'Flag'}</Button>
-              </div>
-              <div className="space-y-2">
-                {Array.isArray(questions[currentIndex].options) ? (
-                  (questions[currentIndex].options as string[]).map((opt: string, i: number) => (
-                    <label key={i} className="flex items-center gap-2">
-                      <input type="radio" name={`q-${questions[currentIndex].id}`} checked={answers[questions[currentIndex].id] === String(opt)} onChange={() => handleSelect(questions[currentIndex].id, String(opt))} />
-                      <span>{opt}</span>
-                    </label>
-                  ))
-                ) : (
-                  <div>
-                    <Input value={answers[questions[currentIndex].id] || ''} onChange={(e) => handleSelect(questions[currentIndex].id, e.target.value)} placeholder="Type your answer" />
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-4 flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}>Previous</Button>
-                <Button variant="outline" onClick={() => setCurrentIndex(Math.min(questions.length - 1, currentIndex + 1))}>Next</Button>
-              </div>
+    <div className="p-2 sm:p-4 md:p-6 overflow-auto h-full max-w-4xl mx-auto w-full">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 mb-4 sm:mb-6 w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-3 sm:mb-4">
+          <div className="min-w-0">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h2>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Question {currentIndex + 1} of {questions.length}
+              </span>
+              {currentQuestion.section && (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                  {currentQuestion.section}
+                </span>
+              )}
             </div>
-          )}
-
-          <div className="mt-6 flex justify-end">
-            <Button className="bg-accent" onClick={handleSubmit}>Review & Submit</Button>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant={flagged.has(currentIndex) ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => {
+                const newFlagged = new Set(flagged);
+                if (flagged.has(currentIndex)) {
+                  newFlagged.delete(currentIndex);
+                } else {
+                  newFlagged.add(currentIndex);
+                }
+                setFlagged(newFlagged);
+              }}
+            >
+              {flagged.has(currentIndex) ? '⭐ Unflag' : '⭐ Flag for Review'}
+            </Button>
           </div>
         </div>
-        <div className="w-56 p-3 border rounded bg-white">
-          <div className="font-semibold mb-2">Questions</div>
-          <div className="grid grid-cols-4 gap-2">
-            {questions.map((_, idx) => {
-              const isCurrent = idx === currentIndex;
-              const isAnswered = answeredIdxs.has(idx);
-              const isFlagged = flagged.has(idx);
-              return (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`w-10 h-10 rounded border flex items-center justify-center text-sm font-semibold ${isCurrent ? 'bg-primary text-primary-foreground' : isAnswered ? 'bg-muted' : 'bg-card'} ${isFlagged ? 'ring-2 ring-destructive' : ''}`}
-                >
-                  {idx + 1}
-                </button>
-              );
-            })}
+        
+        {currentQuestion.passage && (
+          <div className="mb-4 p-4 bg-gray-50 rounded">
+            <p className="whitespace-pre-line">{currentQuestion.passage}</p>
           </div>
+        )}
+        
+        <p className="mb-4">{currentQuestion.question_text}</p>
+
+        <div className="space-y-2">
+          {Array.isArray(currentQuestion.options) ? (
+            currentQuestion.options.map((option, i) => (
+              <div key={i}
+                onClick={() => handleSelect(currentQuestion.id, String(i))}
+                className={`p-3 border rounded cursor-pointer hover:bg-gray-50 ${answers[currentQuestion.id] === String(i) ? 'bg-blue-50 border-blue-500' : ''}`}
+              >
+                {String.fromCharCode(65 + i)}. {option}
+              </div>
+            ))
+          ) : (
+            <div>
+              <Input value={answers[currentQuestion.id] || ''} onChange={(e) => handleSelect(currentQuestion.id, e.target.value)} placeholder="Type your answer" />
+            </div>
+          )}
+        </div>
+
+
+        <div className="mt-4 sm:mt-6 flex flex-col-reverse sm:flex-row gap-3 justify-between items-stretch sm:items-center border-t border-gray-200 dark:border-gray-700 pt-4">
+          <Button
+            variant="outline"
+            onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
+            disabled={currentIndex === 0}
+            className="w-full sm:w-auto h-11 sm:h-10"
+          >
+            <span className="hidden sm:inline">←</span> Previous
+          </Button>
+          
+          <div className="flex gap-3 w-full sm:w-auto">
+            {currentIndex < questions.length - 1 ? (
+              <Button 
+                onClick={() => setCurrentIndex(Math.min(questions.length - 1, currentIndex + 1))}
+                className="w-full sm:w-auto h-11 sm:h-10 bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                Next <span className="hidden sm:inline">Question →</span>
+              </Button>
+            ) : (
+              <Button 
+                onClick={handleSubmit} 
+                className="w-full sm:w-auto h-11 sm:h-10 bg-green-600 hover:bg-green-700"
+              >
+                Submit Quiz
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 sm:mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 w-full">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-3">
+          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Questions</h3>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+            <span className="flex items-center">
+              <span className="w-3 h-3 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 mr-1"></span>
+              Answered
+            </span>
+            <span className="flex items-center">
+              <span className="w-3 h-3 rounded-full border border-gray-200 dark:border-gray-600 mr-1"></span>
+              Unanswered
+            </span>
+            <span className="flex items-center">
+              <span className="w-3 h-3 rounded-full ring-2 ring-yellow-400 dark:ring-yellow-500 mr-1"></span>
+              Flagged
+            </span>
+          </div>
+        </div>
+        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
+          {questions.map((_, idx) => {
+            const isCurrent = idx === currentIndex;
+            const isAnswered = answeredIdxs.has(idx);
+            const isFlagged = flagged.has(idx);
+            return (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`w-8 h-8 sm:w-9 sm:h-9 rounded-md flex items-center justify-center text-sm font-medium transition-colors
+                  ${isCurrent 
+                    ? 'bg-primary text-primary-foreground border-primary' 
+                    : isAnswered 
+                      ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800' 
+                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-600'}
+                  ${isFlagged ? 'ring-2 ring-yellow-400 dark:ring-yellow-500' : ''}
+                  border hover:bg-gray-50 dark:hover:bg-gray-700/70`}
+                title={isFlagged ? 'Flagged for review' : `Question ${idx + 1}`}
+              >
+                {idx + 1}
+              </button>
+            );
+          })}
         </div>
       </div>
 

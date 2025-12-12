@@ -15,12 +15,12 @@ const ExamCancelled = () => {
 
   useEffect(() => {
     if (secondsLeft <= 0) {
-      navigate('/dashboard');
+      window.location.reload();
       return;
     }
     const t = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
     return () => clearTimeout(t);
-  }, [secondsLeft, navigate]);
+  }, [secondsLeft]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary via-primary/90 to-primary/80 p-4">
@@ -39,7 +39,7 @@ const ExamCancelled = () => {
         </div>
 
         <div className="mb-6">
-          <p className="text-sm text-muted-foreground">Redirecting to your dashboard in <span className="font-mono font-semibold">{secondsLeft}s</span></p>
+          <p className="text-sm text-muted-foreground">Refreshing page in <span className="font-mono font-semibold">{secondsLeft}s</span></p>
         </div>
 
         <div className="flex gap-3 justify-center mb-4">

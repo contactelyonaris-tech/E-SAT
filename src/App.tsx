@@ -17,6 +17,8 @@ import ExamSubmitted from "./pages/ExamSubmitted";
 import ExamCancelled from "./pages/ExamCancelled";
 import ContactUs from "./pages/ContactUs";
 import ForgotId from "./pages/ForgotId";
+import VerbalReasoningQuiz from "./pages/VerbalReasoningQuiz";
+import VerbalReasoning from "./pages/VerbalReasoning";
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Admin = lazy(() => import("./pages/Admin"));
 const Landing = lazy(() => import("./pages/Landing"));
@@ -44,6 +46,8 @@ const App = () => (
             <Route path="/exam/:id/cancelled" element={<ExamCancelled />} />
             <Route path="/ContactUs" element={<ContactUs />} />
             <Route path="/ForgotId" element={<ForgotId />} />
+            <Route path="/verbal-reasoning" element={<VerbalReasoningQuiz />} />
+            <Route path="/verbal-reasoning/quiz" element={<VerbalReasoning />} />
             <Route path="/admin/*" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

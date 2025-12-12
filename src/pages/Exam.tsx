@@ -7,7 +7,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Maximize, X, AlertTriangle, Eye, Key } from 'lucide-react';
+import { Maximize, X, AlertTriangle, Eye, Key, Clock, Camera, AlertCircle } from 'lucide-react';
 import AlertIconAnimation from '@/components/AlertIconAnimation';
 import { useSecureExam } from '@/hooks/useSecureExam';
 import logo from '@/assets/logo.png';
@@ -24,8 +24,7 @@ const Exam = () => {
   // Admin-configured access code (stored in exam.description). If empty, no code is required.
   const expectedExamCode = String(location.state?.exam?.description || '').trim();
   
-  const [showExitDialog, setShowExitDialog] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(exam?.duration * 60 || 0);
+  // State management
   const [examStarted, setExamStarted] = useState(() => {
     // Try to recover exam state from localStorage
     const savedState = localStorage.getItem(`exam_${id}_state`);
@@ -36,7 +35,9 @@ const Exam = () => {
   const [submittedServer, setSubmittedServer] = useState(false);
   const [recovered, setRecovered] = useState(false);
   const [examScore, setExamScore] = useState<{ score: number; total: number } | null>(null);
-  
+  const [showExitDialog, setShowExitDialog] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(exam?.duration * 60 || 0);
+  const [isStartingExam, setIsStartingExam] = useState(false);
   const { violations, screenshotCount, isFullscreen, enterFullscreen, exitFullscreen } = useSecureExam(examStarted, id);
   const cancelledRef = useRef(false);
 
@@ -362,8 +363,6 @@ const Exam = () => {
     return () => clearInterval(timer);
   }, [examStarted, handleEndExam]);
 
-  const [isStartingExam, setIsStartingExam] = useState(false);
-
   const handleStartExam = async () => {
     if (isStartingExam) return; // Prevent multiple clicks
     
@@ -591,58 +590,68 @@ const Exam = () => {
         </div>
       )}
       {/* Exam Header */}
-      <header className="bg-primary text-primary-foreground px-4 py-3 flex items-center justify-between border-b border-accent/30">
-        <div className="flex items-center gap-3">
-          <img src={logo} alt="ELYONARIS TEST V1.0" className="h-8 w-8" />
-          <div>
-            <h1 className="font-semibold text-sm">{exam.title}</h1>
-            <p className="text-xs opacity-80">Secure Exam Mode</p>
+      <header className="bg-primary text-primary-foreground px-4 py-3 border-b border-accent/30">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
+          {/* Left side: Logo and title */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <img src={logo} alt="ELYONARIS TEST V1.0" className="h-8 w-8" />
+            <div>
+              <h1 className="font-semibold text-sm">{exam.title}</h1>
+              <p className="text-xs opacity-80">Secure Exam Mode</p>
+            </div>
           </div>
-        </div>
-        
-        <div className="flex items-center gap-4">
-    <div className="flex items-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <Eye className="h-4 w-4" />
+          
+          {/* Middle: Monitoring and status */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 flex-1">
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm bg-primary-foreground/10 px-2.5 py-1 rounded-full">
+              <Eye className="h-3.5 w-3.5 flex-shrink-0 text-accent" />
               <span>Monitoring Active</span>
             </div>
-            <div className="font-mono font-semibold text-accent">
-              {formatTime(timeRemaining)}
+            
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm bg-primary-foreground/10 px-2.5 py-1 rounded-full">
+              <Clock className="h-3.5 w-3.5 flex-shrink-0 text-accent" />
+              <span className="font-mono font-semibold">{formatTime(timeRemaining)}</span>
             </div>
+            
+            {violations.length > 0 && (
+              <div className="flex items-center gap-1.5 text-xs sm:text-sm bg-destructive/20 px-2.5 py-1 rounded-full">
+                <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 text-destructive" />
+                <span>{violations.length} violation{violations.length !== 1 ? 's' : ''}</span>
+              </div>
+            )}
+            
+            {screenshotCount > 0 && (
+              <div className="flex items-center gap-1.5 text-xs sm:text-sm bg-accent/10 px-2.5 py-1 rounded-full">
+                <Camera className="h-3.5 w-3.5 flex-shrink-0 text-accent" />
+                <span>{screenshotCount}/6 screenshots</span>
+              </div>
+            )}
           </div>
           
-          {violations.length > 0 && (
-            <Badge variant="destructive" className="animate-pulse">
-              {violations.length} violations
-            </Badge>
-          )}
-          
-          {screenshotCount > 0 && (
-            <Badge variant="outline" className="border-accent text-accent">
-              Screenshots: {screenshotCount}/6
-            </Badge>
-          )}
-          
-          {!isFullscreen && (
+          {/* Right side: Action buttons */}
+          <div className="flex items-center gap-2 self-end sm:self-auto">
+            {!isFullscreen ? (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={enterFullscreen}
+                className="border-accent text-accent hover:bg-accent hover:text-accent-foreground h-8 sm:h-9 text-xs sm:text-sm"
+              >
+                <Maximize className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
+                <span className="whitespace-nowrap">Fullscreen</span>
+              </Button>
+            ) : null}
+            
             <Button
               size="sm"
-              variant="outline"
-              onClick={enterFullscreen}
-              className="border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+              variant="destructive"
+              onClick={() => setShowExitDialog(true)}
+              className="h-8 sm:h-9 text-xs sm:text-sm"
             >
-              <Maximize className="h-4 w-4 mr-1" />
-              Fullscreen
+              <X className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1 flex-shrink-0" />
+              <span className="whitespace-nowrap">End Exam</span>
             </Button>
-          )}
-          
-          <Button
-            size="sm"
-            variant="destructive"
-            onClick={() => setShowExitDialog(true)}
-          >
-            <X className="h-4 w-4 mr-1" />
-            End Exam
-          </Button>
+          </div>
         </div>
       </header>
 
