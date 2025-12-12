@@ -1,0 +1,49 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build directories
+dist
+dist-ssr
+build
+.next
+out
+
+# Cache and temp files
+.cache
+.temp
+.tmp
+.vercel
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+
+# System files
+Thumbs.db
+.DS_Store
+
+# Local development
+*.local
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
