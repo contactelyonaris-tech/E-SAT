@@ -309,8 +309,12 @@ const Dashboard = () => {
           <div className="flex items-center gap-3 animate-fade-in">
             <div className="relative">
               <div className="absolute inset-0 bg-accent/30 rounded-lg blur-xl animate-glow"></div>
-              <div className="relative bg-gradient-to-br from-background to-accent/10 p-2 rounded-lg shadow-2xl border-2 border-accent/30">
-                <img src={logo} alt="ELYONARIS TEST V1.0" className="h-10 w-10" />
+              <div className="relative bg-gradient-to-br from-background to-accent/10 p-2 rounded-lg shadow-2xl border-2 border-accent/30 w-12 h-12 flex items-center justify-center">
+                <img 
+                  src={logo} 
+                  alt="ELYONARIS TEST V1.0" 
+                  className="h-8 w-8 object-contain" 
+                />
               </div>
             </div>
             <div>

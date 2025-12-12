@@ -228,15 +228,38 @@ const Exam = () => {
     }
     
     if (clearStorage) {
-      // Navigate to submitted page instead of dashboard
+      // Check if retake is enabled for this user and exam
+      const admissionId = String(localStorage.getItem('student_admission_id') || '').trim();
+      let allowRetake = false;
+      
+      try {
+        if (id && admissionId) {
+          const { data: retakeData } = await supabase
+            .from('exam_retake')
+            .select('enabled')
+            .eq('exam_id', id)
+            .eq('admission_id', admissionId)
+            .limit(1)
+            .single<{ enabled: boolean }>();
+          
+          if (retakeData?.enabled) {
+            allowRetake = true;
+          }
+        }
+      } catch (err) {
+        console.error('Error checking retake status:', err);
+      }
+
+      // Navigate to submitted page with retake status
       navigate(`/exam/${id}/submitted`, { 
         state: { 
           exam,
           submission: {
             exam_id: id,
-            admission_id: String(localStorage.getItem('student_admission_id') || '').trim(),
+            admission_id: admissionId,
             created_at: new Date().toISOString()
-          }
+          },
+          allowRetake
         },
         replace: true
       });
