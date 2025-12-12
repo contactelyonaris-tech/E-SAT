@@ -322,10 +322,10 @@ const Dashboard = () => {
               <p className="text-sm text-[#d4f4dd]/80">Secure Exam Platform</p>
             </div>
           </div>
-          <div className="flex items-center gap-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <div className="flex items-center gap-3 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <a
               href="/ContactUs"
-              className="text-[#d4f4dd] hover:text-accent font-semibold px-3 py-2 rounded transition-colors duration-200 border border-accent/30 hover:bg-accent/20 bg-[#0a2e0a]/50 backdrop-blur-sm"
+              className="text-sm text-[#d4f4dd] hover:text-accent font-semibold px-4 py-2 rounded transition-colors duration-200 border border-accent/30 hover:bg-accent/20 bg-[#0a2e0a]/50 backdrop-blur-sm h-10 flex items-center"
             >
               Contact Us
             </a>
@@ -333,10 +333,10 @@ const Dashboard = () => {
               variant="outline" 
               size="sm" 
               onClick={handleLogout}
-              className="border-accent/30 text-[#d4f4dd] hover:bg-accent/20 hover:border-accent bg-[#0a2e0a]/50 backdrop-blur-sm"
+              className="h-10 px-4 border-accent/30 text-[#d4f4dd] hover:bg-accent/20 hover:border-accent bg-[#0a2e0a]/50 backdrop-blur-sm flex items-center gap-2"
             >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
+              <LogOut className="h-4 w-4" />
+              <span>Logout</span>
             </Button>
           </div>
         </div>

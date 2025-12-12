@@ -19,12 +19,6 @@ const PasswordChange = () => {
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Check if password was already changed
-    if (localStorage.getItem(`password_changed_${admissionId}`)) {
-      toast.error('You have already changed your password. Please contact support if you need to reset it.');
-      return;
-    }
-    
     if (newPassword !== confirmPassword) {
       toast.error('Passwords do not match');
       return;
@@ -35,6 +29,12 @@ const PasswordChange = () => {
       return;
     }
     
+    // Prevent using the default password
+    if (newPassword === '1234') {
+      toast.error('Please choose a different password');
+      return;
+    }
+    
     setLoading(true);
     try {
       if (!admissionId) {
@@ -42,15 +42,25 @@ const PasswordChange = () => {
         return;
       }
       
-      // Check if password was already changed before
-      if (localStorage.getItem(`password_changed_${admissionId}`)) {
-        toast.error('You have already changed your password. Please contact support if you need to reset it.');
+      // Update password in Supabase (the trigger will handle hashing)
+      const { error } = await supabase
+        .from('students_1')
+        .update({ 
+          password: newPassword,
+          updated_at: new Date().toISOString()
+        })
+        .eq('admission_id', admissionId);
+
+      if (error) {
+        console.error('Error updating password in Supabase:', error);
+        toast.error('Failed to update password in database');
         return;
       }
-      
-      // Store the new password and mark that password has been changed
+
+      // Also update local storage for backward compatibility
       localStorage.setItem(`user_password_${admissionId}`, newPassword);
       localStorage.setItem(`password_changed_${admissionId}`, 'true');
+      
       setPasswordChanged(true);
       toast.success('Password changed successfully');
       setTimeout(() => {

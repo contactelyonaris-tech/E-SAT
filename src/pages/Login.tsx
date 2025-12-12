@@ -66,28 +66,34 @@ const Login = () => {
         return;
       }
       
-      // Check against stored password (in a real app, this would be hashed and checked on the server)
-      const storedPassword = localStorage.getItem(`user_password_${id}`);
-      if (storedPassword !== userPassword) {
-        toast.error('Invalid admission ID or password');
-        return;
-      }
-      
-      // Get user data (in a real app, this would come from your backend)
-      const { data, error } = await supabase
+      // Get user data with password from Supabase
+      const { data: user, error: userError } = await supabase
         .from('students_1')
-        .select('admission_id, first_name')
+        .select('admission_id, first_name, password')
         .eq('admission_id', id)
         .limit(1)
         .single();
         
-      if (error || !data) {
-        toast.error('User not found');
+      if (userError || !user) {
+        toast.error('Invalid admission ID or password');
         return;
       }
       
+      // Verify the password using the database function
+      const { data: isValid, error: verifyError } = await supabase
+        .rpc('verify_password', {
+          stored_password: user.password,
+          input_password: userPassword
+        });
+      
+      if (verifyError || !isValid) {
+        toast.error('Invalid admission ID or password');
+        return;
+      }
+      
+      // Store user data in localStorage
       localStorage.setItem('student_admission_id', id);
-      localStorage.setItem('student_first_name', data.first_name || 'User');
+      localStorage.setItem('student_first_name', user.first_name || 'User');
       toast.success('Login successful');
       navigate('/dashboard');
     } finally {
