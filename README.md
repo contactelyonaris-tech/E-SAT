@@ -1,0 +1,60 @@
+# ELYONTESTED V1.0 - Secure Exam Platform
+
+## Project Overview
+A secure exam platform for students with Google Forms integration, anti-cheating measures, and real-time monitoring.
+
+## Getting Started
+
+### Prerequisites
+- Node.js & npm - [Install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+### Installation
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+
+## Deployment
+This project is deployed on Vercel. Push changes to the main branch to trigger automatic deployments.
+
+## Features
+- Secure exam environment
+- Google Forms integration
+- Real-time monitoring
+- Anti-cheating measures
+
+## Technologies Used
+**Edit a file directly in GitHub**
+
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
+
+**Use GitHub Codespaces**
+
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
+
+## What technologies are used for this project?
+
+This project is built with:
+
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
+
+## How can I deploy this project?
+
+Simply open [Lovable](https://lovable.dev/projects/4565259d-c816-4eb4-98c6-26b7ae14edad) and click on Share -> Publish.
+
+## Can I connect a custom domain to my Lovable project?
+
+Yes, you can!
+
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
