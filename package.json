@@ -48,13 +48,9 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
-<<<<<<< HEAD
     "dotenv": "^17.2.3",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.26",
-=======
-    "embla-carousel-react": "^8.6.0",
->>>>>>> eb1952c30efaaf4746d887d80d31bdb1ab685cb6
     "history": "^5.3.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.555.0",
@@ -81,10 +77,6 @@
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.21",
-<<<<<<< HEAD
-=======
-    "dotenv": "^17.2.3",
->>>>>>> eb1952c30efaaf4746d887d80d31bdb1ab685cb6
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
